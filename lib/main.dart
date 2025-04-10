@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-// import 'screens/recording_screen.dart';
-// import 'screens/transcription_screen.dart';
+import 'screens/recording_screen.dart';
+import 'screens/transcription_screen.dart';
 import 'shared/theme/app_theme.dart';
 
 void main() {
@@ -16,11 +16,15 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: '/',
+      home: const HomeScreen(),
       routes: {
-        '/': (context) => const HomeScreen(),
-        // '/record': (context) => const RecordingScreen(),
-        // '/transcription': (context) => const TranscriptionScreen(),
+        '/transcription': (context) => const TranscriptionScreen(),
+        '/record': (context) => const RecordingScreen(),
+      },
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        );
       },
     );
   }
