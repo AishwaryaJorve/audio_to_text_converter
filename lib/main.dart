@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/recording_screen.dart';
-import 'screens/transcription_screen.dart';
-import 'core/theme/app_theme.dart';
+// import 'screens/recording_screen.dart';
+// import 'screens/transcription_screen.dart';
+import 'shared/theme/app_theme.dart';
 
 void main() {
   runApp(MyApp());

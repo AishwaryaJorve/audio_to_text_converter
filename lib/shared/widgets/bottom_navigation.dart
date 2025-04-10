@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constants/icons/app_icons.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -21,15 +22,15 @@ class BottomNavigation extends StatelessWidget {
       backgroundColor: theme.colorScheme.surface,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(AppIcons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.mic),
+          icon: Icon(AppIcons.record),
           label: 'Record',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(AppIcons.account),
           label: 'Account',
         ),
       ],

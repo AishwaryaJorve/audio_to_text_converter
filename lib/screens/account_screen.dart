@@ -67,41 +67,41 @@ class AccountScreen extends StatelessWidget {
                 const SizedBox(height: 32),
 
                 // Subscription Card
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Basic',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: null,
-                            child: Text('Upgrade'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '3 of 300 monthly minutes used',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   decoration: BoxDecoration(
+                //     border: Border.all(color: Colors.grey.shade300),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                  // child: Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     const Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         Text(
+                  //           'Basic',
+                  //           style: TextStyle(
+                  //             fontSize: 18,
+                  //             fontWeight: FontWeight.bold,
+                  //           ),
+                  //         ),
+                  //         ElevatedButton(
+                  //           onPressed: null,
+                  //           child: Text('Upgrade'),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     const SizedBox(height: 8),
+                  //     Text(
+                  //       '3 of 300 monthly minutes used',
+                  //       style: TextStyle(
+                  //         color: Colors.grey.shade600,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                // ),
                 const SizedBox(height: 32),
 
                 // Version and Terms
@@ -114,7 +114,7 @@ class AccountScreen extends StatelessWidget {
                   text: TextSpan(
                     style: TextStyle(color: Colors.grey.shade600),
                     children: [
-                      const TextSpan(text: 'By using Otter you agree to the '),
+                      const TextSpan(text: 'By using Audio-to-Text you agree to the '),
                       TextSpan(
                         text: 'Terms of Service',
                         style: TextStyle(color: Theme.of(context).primaryColor),

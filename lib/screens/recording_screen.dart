@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/icons/app_icons.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({Key? key}) : super(key: key);
@@ -99,7 +100,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
             _isRecording = !_isRecording;
           });
         },
-        child: Icon(_isRecording ? Icons.stop : Icons.mic),
+        child: Icon(_isRecording ? AppIcons.stop : AppIcons.mic),
       ),
     );
   }
