@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecordingScreen extends StatefulWidget {
-  const RecordingScreen({super.key});
+  const RecordingScreen({Key? key}) : super(key: key);
 
   @override
   State<RecordingScreen> createState() => _RecordingScreenState();
@@ -9,87 +9,98 @@ class RecordingScreen extends StatefulWidget {
 
 class _RecordingScreenState extends State<RecordingScreen> {
   bool _isRecording = false;
-  List<double> _waveformData = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Record Audio'),
-        centerTitle: true,
-      ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Center(
-              child: CustomPaint(
-                painter: WaveformPainter(_waveformData),
-                size: Size(MediaQuery.of(context).size.width, 200),
+          // User Info and Timestamp
+          _buildUserInfoSection(),
+
+          // Summary Content
+          _buildSummaryContent(),
+
+          // Recording Visualization
+          _buildRecordingVisualization(),
+
+          // Recording Controls
+          _buildRecordingControls(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserInfoSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                DateTime.now().toString().split('.')[0],
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    setState(() {
-                      _isRecording = !_isRecording;
-                      // TODO: Implement actual recording logic
-                    });
-                  },
-                  child: Icon(_isRecording ? Icons.stop : Icons.mic),
-                ),
-              ],
-            ),
+              Text(
+                _isRecording ? 'Recording in progress...' : 'Ready to record',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ],
       ),
     );
   }
-}
 
-class WaveformPainter extends CustomPainter {
-  final List<double> waveformData;
-
-  WaveformPainter(this.waveformData);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke;
-
-    if (waveformData.isEmpty) {
-      // Draw a flat line if no data
-      canvas.drawLine(
-        Offset(0, size.height / 2),
-        Offset(size.width, size.height / 2),
-        paint,
-      );
-      return;
-    }
-
-    final path = Path();
-    final pointSpacing = size.width / waveformData.length;
-
-    path.moveTo(0, size.height / 2);
-
-    for (var i = 0; i < waveformData.length; i++) {
-      final x = i * pointSpacing;
-      final y = size.height / 2 + (waveformData[i] * size.height / 2);
-      path.lineTo(x, y);
-    }
-
-    canvas.drawPath(path, paint);
+  Widget _buildSummaryContent() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Center(
+          child: Text(
+            'Summary Content',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ),
+    );
   }
 
-  @override
-  bool shouldRepaint(covariant WaveformPainter oldDelegate) {
-    return oldDelegate.waveformData != waveformData;
+  Widget _buildRecordingVisualization() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          5,
+          (index) => Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _isRecording ? Colors.red : Colors.grey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecordingControls() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _isRecording = !_isRecording;
+          });
+        },
+        child: Icon(_isRecording ? Icons.stop : Icons.mic),
+      ),
+    );
   }
 }

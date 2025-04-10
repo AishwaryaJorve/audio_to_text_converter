@@ -14,7 +14,7 @@ class AccountScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 // Profile Section
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 40,
                   backgroundColor: Colors.pink,
                   child: Text(

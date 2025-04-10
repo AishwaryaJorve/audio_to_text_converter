@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../shared/widgets/bottom_navigation.dart';
 import 'account_screen.dart';
+import 'recording_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,16 +12,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  late final List<Widget> _screens;
 
-  @override
-  void initState() {
-    super.initState();
-    _screens = [
-      _buildHomeContent(),
-      const Center(child: Text('Record')),
-      const AccountScreen(),
-    ];
+  Widget _getCurrentScreen() {
+    switch (_currentIndex) {
+      case 0:
+        return _buildHomeContent();
+      case 1:
+        return const RecordingScreen();
+      case 2:
+        return const AccountScreen();
+      default:
+        return _buildHomeContent();
+    }
   }
 
   Widget _buildHomeContent() {
@@ -73,16 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Audio Transcriptions'),
-        centerTitle: true,
-      ),
-      body: _screens[_currentIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/record');
-        },
-        child: const Icon(Icons.mic),
+      body: SafeArea(
+        child: _getCurrentScreen(),
       ),
       bottomNavigationBar: BottomNavigation(
         currentIndex: _currentIndex,
@@ -90,13 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _currentIndex = index;
           });
-          setState(() {
-            _currentIndex = index;
-          });
         },
       ),
     );
   }
-
-
 }

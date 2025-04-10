@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/recording_screen.dart';
 import 'screens/transcription_screen.dart';
+import 'core/theme/app_theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Audio to Text Converter',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
-        '/record': (context) => const RecordingScreen(),
-        '/transcription': (context) => const TranscriptionScreen(),
+        // '/record': (context) => const RecordingScreen(),
+        // '/transcription': (context) => const TranscriptionScreen(),
       },
     );
   }

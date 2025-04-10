@@ -5,10 +5,10 @@ class BottomNavigation extends StatelessWidget {
   final Function(int) onTap;
 
   const BottomNavigation({
-    super.key,
+    Key? key,
     required this.currentIndex,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class BottomNavigation extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.mic, size: 32),
+          icon: Icon(Icons.mic),
           label: 'Record',
         ),
         BottomNavigationBarItem(
