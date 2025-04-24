@@ -1,33 +1,84 @@
 import 'package:flutter/material.dart';
 import '../constants/icons/app_icons.dart';
+import '../services/transcription_service.dart';
 
 class RecordingScreen extends StatefulWidget {
   const RecordingScreen({Key? key}) : super(key: key);
 
   @override
-  State<RecordingScreen> createState() => _RecordingScreenState();
+  _RecordingScreenState createState() => _RecordingScreenState();
 }
 
 class _RecordingScreenState extends State<RecordingScreen> {
+  final TranscriptionService _transcriptionService = TranscriptionService();
+  String _transcribedText = '';
+  int _audioDuration = 0;
   bool _isRecording = false;
+
+  Future<void> _saveTranscription() async {
+    try {
+      await _transcriptionService.saveTranscription(
+        text: _transcribedText,
+        audioPath: 'path/to/audio/file', // Replace with actual audio file path
+        duration: _audioDuration,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Transcription saved successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save transcription: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // User Info and Timestamp
-          _buildUserInfoSection(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Transcription text display
+              Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: _transcribedText),
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    hintText: 'Transcription will appear here...',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _transcribedText = value;
+                    });
+                  },
+                ),
+              ),
 
-          // Summary Content
-          _buildSummaryContent(),
+              const SizedBox(height: 16),
 
-          // Recording Visualization
-          _buildRecordingVisualization(),
-
-          // Recording Controls
-          _buildRecordingControls(),
-        ],
+              // Save and Record buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO: Implement audio recording
+                    },
+                    child: const Text('Start Recording'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _saveTranscription,
+                    child: const Text('Save Transcription'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

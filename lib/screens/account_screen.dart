@@ -1,151 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/google_sign_in_service.dart';
+import '../screens/auth_screen.dart';
 
 class AccountScreen extends StatelessWidget {
-  const AccountScreen({super.key});
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = GoogleSignInService.getCurrentUser();
+
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                // Profile Section
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.pink,
-                  child: Text(
-                    'A',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Aishwarya Jorve',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'aishwaryajorve1604@gmail.com',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 32),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // User Profile Section
+              _buildProfileHeader(user),
 
-                // Menu Items
-                _buildMenuItem(
-                  icon: Icons.settings,
-                  title: 'Account Settings',
-                  onTap: () {},
-                ),
-                _buildMenuItem(
-                  icon: Icons.card_giftcard,
-                  title: 'Refer & Earn',
-                  onTap: () {},
-                ),
-                _buildMenuItem(
-                  icon: Icons.help_outline,
-                  title: 'Help Center',
-                  onTap: () {},
-                ),
-                _buildMenuItem(
-                  icon: Icons.delete_outline,
-                  title: 'Trash',
-                  onTap: () {},
-                ),
-                const SizedBox(height: 32),
+              const SizedBox(height: 32),
 
-                // Subscription Card
-                // Container(
-                //   padding: const EdgeInsets.all(16),
-                //   decoration: BoxDecoration(
-                //     border: Border.all(color: Colors.grey.shade300),
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
-                  // child: Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     const Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Text(
-                  //           'Basic',
-                  //           style: TextStyle(
-                  //             fontSize: 18,
-                  //             fontWeight: FontWeight.bold,
-                  //           ),
-                  //         ),
-                  //         ElevatedButton(
-                  //           onPressed: null,
-                  //           child: Text('Upgrade'),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     const SizedBox(height: 8),
-                  //     Text(
-                  //       '3 of 300 monthly minutes used',
-                  //       style: TextStyle(
-                  //         color: Colors.grey.shade600,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                // ),
-                const SizedBox(height: 32),
+              // Account Settings
+              _buildAccountSettings(context),
 
-                // Version and Terms
-                Text(
-                  'Version 1.0.0',
-                  style: TextStyle(color: Colors.grey.shade600),
-                ),
-                const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(color: Colors.grey.shade600),
-                    children: [
-                      const TextSpan(text: 'By using Audio-to-Text you agree to the '),
-                      TextSpan(
-                        text: 'Terms of Service',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
-                      const TextSpan(text: ' and '),
-                      TextSpan(
-                        text: 'Privacy Policy',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              const Spacer(),
+
+              // Logout Button
+              _buildLogoutButton(context),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildMenuItem({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: onTap,
-      contentPadding: EdgeInsets.zero,
+  Widget _buildProfileHeader(User? user) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 60,
+          backgroundImage: user?.photoURL != null 
+            ? NetworkImage(user!.photoURL!) 
+            : null,
+          child: user?.photoURL == null 
+            ? Icon(Icons.person, size: 60) 
+            : null,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          user?.displayName ?? 'User',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          user?.email ?? 'No email',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccountSettings(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Account Settings'),
+          trailing: Icon(Icons.chevron_right),
+          onTap: () {
+            // TODO: Implement account settings
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.privacy_tip),
+          title: Text('Privacy Policy'),
+          trailing: Icon(Icons.chevron_right),
+          onTap: () {
+            // TODO: Implement privacy policy
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLogoutButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        try {
+          await GoogleSignInService.signOut();
+          // Navigate to auth screen and remove all previous routes
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const AuthScreen()),
+            (Route<dynamic> route) => false,
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Logout failed: $e')),
+          );
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 50),
+      ),
+      child: const Text('Logout'),
     );
   }
 }
