@@ -65,7 +65,6 @@ flutter:
   assets:
     - assets/icons/apple_logo.png
     - assets/icons/google_logo.png
-    - assets/icons/microsoft_logo.png
     - assets/icons/google2_logo.png
     - assets/icons/microsoft2_logo.png
     
